@@ -10,10 +10,24 @@
 import React from 'react';
 import Home from './Home';
 
-async function action() {
+async function action({ fetch, query: { search } }) {
+  const { data } = await fetch('/api/movie_names', { method: 'GET' })
+    .then(res => res.json())
+    .catch(e => console.error(e));
+  // console.log(data);
+  // console.log(search);
+  let locations = [];
+  if (search && search.length) {
+    const result = await fetch(`/api/locations/${search}`, { method: 'GET' })
+      .then(res => res.json())
+      .catch(e => console.error(e));
+    // console.log(result);
+    locations = result.data;
+    // console.log(locations);
+  }
   return {
-    title: 'React Starter Kit',
-    component: <Home />,
+    title: 'Home',
+    component: <Home keywordList={data} locations={locations} />,
   };
 }
 
