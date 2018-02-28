@@ -22,6 +22,7 @@ import errorPageStyle from './routes/error/ErrorPage.css';
 import router from './router';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
+import apiMiddleWare from './middleWares/api';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -51,6 +52,8 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use('/api', apiMiddleWare);
 
 //
 // Authentication
