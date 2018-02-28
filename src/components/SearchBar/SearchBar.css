@@ -1,0 +1,53 @@
+:root {
+  --container-width: 300px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 8px;
+  box-shadow: 4px 4px 10px 0 #999;
+  background-color: #fff;
+}
+
+.autoComp {
+  composes: container;
+  padding: 0;
+  margin-top: 1px;
+  max-height: 300px;
+  overflow-x: hidden;
+}
+
+.autoCompItem {
+  display: block;
+  padding: 8px 8px;
+  font-size: 9pt;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  border-bottom: 1px solid #eee;
+}
+
+.autoCompItem:hover {
+  background-color: #222;
+  color: #ccc;
+}
+
+.txtInput {
+  color: #444;
+  font-size: 11pt;
+  background-color: transparent;
+  width: var(--container-width);
+}
+
+::placeholder {
+  color: #ccc;
+  font-style: italic;
+}
