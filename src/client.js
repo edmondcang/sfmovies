@@ -14,6 +14,7 @@ import deepForceUpdate from 'react-deep-force-update';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import App from './components/App';
+import createFetch from './createFetch';
 import history from './history';
 import { updateMeta } from './DOMUtils';
 import router from './router';
@@ -30,6 +31,10 @@ const context = {
       removeCss.forEach(f => f());
     };
   },
+  // Universal HTTP client
+  fetch: createFetch(fetch, {
+    baseUrl: window.App.apiUrl,
+  }),
 };
 
 const container = document.getElementById('app');

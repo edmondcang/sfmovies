@@ -12,6 +12,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
+import nodeFetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -19,6 +20,7 @@ import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
+import createFetch from './createFetch';
 import router from './router';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
@@ -90,10 +92,17 @@ app.get('*', async (req, res, next) => {
       styles.forEach(style => css.add(style._getCss()));
     };
 
+    // Universal HTTP client
+    const fetch = createFetch(nodeFetch, {
+      baseUrl: config.api.serverUrl,
+      cookie: req.headers.cookie,
+    });
+
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
       insertCss,
+      fetch,
       // The twins below are wild, be careful!
       pathname: req.path,
       query: req.query,
