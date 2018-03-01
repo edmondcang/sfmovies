@@ -8,7 +8,7 @@ import history from '../../history';
 import s from './SearchBar.css';
 
 const validate = value => {
-  if (value.constructor !== String) {
+  if (!value || value.constructor !== String) {
     return '';
   }
   return value.trim().replace(/\s+/g, ' ');
