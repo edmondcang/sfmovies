@@ -30,7 +30,7 @@
   top: auto;
   left: 8px;
   right: 8px;
-  height: 400px;
+  height: 100px;
   box-shadow: 0 0 20px #888;
   transition: bottom 0.4s ease;
 }

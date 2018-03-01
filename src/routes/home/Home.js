@@ -33,9 +33,13 @@ class Home extends React.Component {
 
   state = {
     isFilmOpen: false,
+    // filmTitle: '',
+    filmAddress: '',
   };
 
-  setFilmContent = () => {
+  setFilmContent = item => {
+    // console.log(item);
+    this.setState({ filmAddress: item.Locations });
     this.openFilmView();
   };
 
@@ -48,7 +52,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const { isFilmOpen } = this.state;
+    const { isFilmOpen, filmAddress } = this.state;
     const { keywordList, locations } = this.props;
 
     return (
@@ -60,9 +64,10 @@ class Home extends React.Component {
             onMarkerClick={this.setFilmContent}
           />
         </div>
-        <div className={s.viewfilm} style={{ bottom: isFilmOpen ? 0 : -400 }}>
+        <div className={s.viewfilm} style={{ bottom: isFilmOpen ? 0 : -100 }}>
           <div className={s.viewfilmContent}>
-            <h1>Film details go here</h1>
+            {/* <h2>{filmTitle}</h2> */}
+            <p>{filmAddress}</p>
           </div>
           <div
             className={s.viewfilmCloseBtn}
@@ -75,7 +80,11 @@ class Home extends React.Component {
           </div>
         </div>
         <div className={s.control}>
-          <SearchBar keywordList={keywordList} />
+          <SearchBar
+            onSearch={this.setLoading}
+            placeholder="search a movie"
+            keywordList={keywordList}
+          />
         </div>
       </div>
     );

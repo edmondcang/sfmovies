@@ -53,6 +53,7 @@ router.get('/locations/:name', async (req, res) => {
 
   const num = parseInt(name, 10);
   const list = await movies
+    // Work around For numeric title
     .find({ $or: [{ Title: num }, { Title: name }] })
     .project({ Locations: 1 })
     .toArray()

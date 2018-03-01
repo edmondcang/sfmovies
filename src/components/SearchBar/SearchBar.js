@@ -21,18 +21,20 @@ const defaultState = {
 };
 
 class SearchBar extends React.Component {
+  static contextTypes = {
+    query: PropTypes.shape().isRequired,
+  };
+
   static propTypes = {
     onChange: PropTypes.func,
     keywordList: PropTypes.arrayOf(PropTypes.string),
-  };
-
-  static contextTypes = {
-    query: PropTypes.shape().isRequired,
+    placeholder: PropTypes.string,
   };
 
   static defaultProps = {
     onChange: null,
     keywordList: [],
+    placeholder: 'search something',
   };
 
   state = { ...defaultState };
@@ -46,28 +48,19 @@ class SearchBar extends React.Component {
     this.setState({ value: search });
   };
 
-  search = (e, str) => {
-    if (str) {
-      return () => {
-        this.setState({ suggestList: [], value: str });
-        history.push(`/?search=${validate(str)}`);
-      };
-    }
-
-    const { value, lastSearched } = this.state;
-
-    if (value === lastSearched) return null;
-
-    history.push(`/?search=${validate(value)}`);
-    this.setState({ lastSearched: value, suggestList: [] });
-    return null;
+  search = str => () => {
+    const value = validate(str);
+    history.push(`/?search=${value}`);
+    this.setState({ lastSearched: value, suggestList: [], value });
   };
 
   handleKeyUp = e => {
-    const { keyCode } = e;
-    if (keyCode === 13) {
-      this.search();
-    }
+    if (e.keyCode !== 13) return;
+
+    const { value, lastSearched, suggestList } = this.state;
+    if (value === lastSearched) return;
+
+    this.search(suggestList[0])();
   };
 
   handleInputChange = e => {
@@ -125,7 +118,7 @@ class SearchBar extends React.Component {
             rtclsn={s.txtInput}
             onChange={this.handleInputChange}
             onKeyUp={this.handleKeyUp}
-            placeholder="search something"
+            placeholder={this.props.placeholder}
             value={value}
           />
         </div>
@@ -137,8 +130,8 @@ class SearchBar extends React.Component {
                 tabIndex="0"
                 role="button"
                 className={s.autoCompItem}
-                onClick={this.search(null, item)}
-                onKeyDown={() => true}
+                onClick={this.search(item)}
+                onKeyDown={null}
               >
                 {item}
               </div>
