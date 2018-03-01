@@ -80,11 +80,7 @@ class Home extends React.Component {
           </div>
         </div>
         <div className={s.control}>
-          <SearchBar
-            onSearch={this.setLoading}
-            placeholder="search a movie"
-            keywordList={keywordList}
-          />
+          <SearchBar placeholder="search a movie" keywordList={keywordList} />
         </div>
       </div>
     );
